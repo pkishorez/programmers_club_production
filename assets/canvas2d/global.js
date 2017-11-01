@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -70,6 +70,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var Point_1 = __webpack_require__(1);
 /**
  * Base Class for all types of shapes that can be
  * added to Canvas library.
@@ -77,6 +78,57 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Shape = /** @class */ (function () {
     function Shape() {
     }
+    Shape.prototype.moveIfNecessary = function (baseUnit) {
+        if (!this.curPosition.isEqualTo(this._move.position)) {
+            var unit = baseUnit * this._move.unit;
+            if (unit == 0) {
+                // Move instantly.
+                this.curPosition.copy(this._move.position);
+                this._move.callback && this._move.callback();
+            }
+            else {
+                // Interpolate Movement.
+                this.curPosition.interpolate(this._move.position, unit);
+                if (this.curPosition.isEqualTo(this._move.position)) {
+                    this._move.callback && this._move.callback();
+                }
+            }
+        }
+    };
+    /**
+     * Sets the position of Shape.
+     * @param x
+     * @param y
+     */
+    Shape.prototype.setPosition = function (x, y) {
+        this.curPosition = new Point_1.Point(x, y);
+        this._move = {
+            position: this.curPosition.clone(),
+            unit: 1
+        };
+        return this;
+    };
+    /**
+     * Move Shape to new position.
+     * @param x
+     * @param y
+     * @param unit 0 to move instantly or specify a number to animate.
+     * @param onFinish Callback function to call after movement is complete.
+     *
+     * Overwrite this function if modifications required.
+     */
+    Shape.prototype.moveTo = function (x, y, unit, onFinish) {
+        var _this = this;
+        if (unit === void 0) { unit = 1; }
+        this._move = {
+            position: new Point_1.Point(x, y),
+            unit: Math.abs(unit),
+            callback: onFinish ? function () {
+                onFinish(_this.curPosition.clone());
+            } : undefined
+        };
+        return this;
+    };
     Shape.prototype.isOverlap = function (obj) {
         var a = this.getDimensions();
         var b = obj.getDimensions();
@@ -92,10 +144,12 @@ var Shape = /** @class */ (function () {
     return Shape;
 }());
 exports.Shape = Shape;
-var Rectangle_1 = __webpack_require__(3);
+var Rectangle_1 = __webpack_require__(4);
 exports.Rectangle = Rectangle_1.Rectangle;
 var Circle_1 = __webpack_require__(5);
 exports.Circle = Circle_1.Circle;
+var CustomShape_1 = __webpack_require__(6);
+exports.CustomShape = CustomShape_1.CustomShape;
 
 
 /***/ }),
@@ -115,7 +169,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Victor = __webpack_require__(4);
+var Victor = __webpack_require__(3);
 Victor.prototype.interpolate = function (a, unit) {
     var self = this;
     var d = self.distance(a);
@@ -254,121 +308,6 @@ exports.Canvas = Canvas;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var _1 = __webpack_require__(0);
-var Point_1 = __webpack_require__(1);
-var Rectangle = /** @class */ (function (_super) {
-    __extends(Rectangle, _super);
-    /**
-     * Initialize Rectangle object with height, width and color.
-     * @param width
-     * @param height
-     * @param color
-     */
-    function Rectangle(width, height, color) {
-        var _this = _super.call(this) || this;
-        _this.width = width;
-        _this.height = height;
-        _this.color = color;
-        // Set default position.
-        _this.setPosition(0, 0);
-        return _this;
-    }
-    /**
-     * Sets the position of Rectangle.
-     * @param x
-     * @param y
-     */
-    Rectangle.prototype.setPosition = function (x, y) {
-        this.curPosition = new Point_1.Point(x, y);
-        this._move = {
-            position: this.curPosition.clone(),
-            unit: 1
-        };
-        return this;
-    };
-    /**
-     * Renders the object on canvas context.
-     * @param context Canvas context object.
-     * @param baseUnit Canvas offset unit.
-     */
-    Rectangle.prototype.render = function (context, baseUnit) {
-        // Move object if required.
-        if (!this.curPosition.isEqualTo(this._move.position)) {
-            var unit = baseUnit * this._move.unit;
-            if (unit == 0) {
-                // Move instantly.
-                this.curPosition.copy(this._move.position);
-                this._move.callback && this._move.callback();
-            }
-            else {
-                // Interpolate Movement.
-                this.curPosition.interpolate(this._move.position, unit);
-                if (this.curPosition.isEqualTo(this._move.position)) {
-                    this._move.callback && this._move.callback();
-                }
-            }
-        }
-        context.beginPath();
-        context.shadowBlur = 10;
-        context.shadowColor = this.color;
-        context.fillStyle = this.color;
-        context.fillRect(this.curPosition.x, this.curPosition.y, this.width, this.height);
-        context.fill();
-        context.closePath();
-        return this;
-    };
-    /**
-     * Move Rectangle to new position.
-     * @param x
-     * @param y
-     * @param unit 0 to move instantly or specify a number to animate.
-     * @param onFinish Callback function to call after movement is complete.
-     */
-    Rectangle.prototype.moveTo = function (x, y, unit, onFinish) {
-        var _this = this;
-        if (unit === void 0) { unit = 1; }
-        this._move = {
-            position: new Point_1.Point(x, y),
-            unit: Math.abs(unit),
-            callback: onFinish ? function () {
-                onFinish(_this.curPosition.clone());
-            } : undefined
-        };
-        return this;
-    };
-    /**
-     * Get the current dimensions of rectangle.
-     */
-    Rectangle.prototype.getDimensions = function () {
-        return {
-            x: this.curPosition.x,
-            y: this.curPosition.y,
-            width: this.width,
-            height: this.height
-        };
-    };
-    return Rectangle;
-}(_1.Shape));
-exports.Rectangle = Rectangle;
-
-
-/***/ }),
-/* 4 */
 /***/ (function(module, exports) {
 
 exports = module.exports = Victor;
@@ -1698,6 +1637,74 @@ function degrees2radian (deg) {
 
 
 /***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var _1 = __webpack_require__(0);
+var Rectangle = /** @class */ (function (_super) {
+    __extends(Rectangle, _super);
+    /**
+     * Initialize Rectangle object with height, width and color.
+     * @param width
+     * @param height
+     * @param color
+     */
+    function Rectangle(width, height, color) {
+        var _this = _super.call(this) || this;
+        _this.width = width;
+        _this.height = height;
+        _this.color = color;
+        // Set default position.
+        _this.setPosition(0, 0);
+        return _this;
+    }
+    /**
+     * Renders the object on canvas context.
+     * @param context Canvas context object.
+     * @param baseUnit Canvas offset unit.
+     */
+    Rectangle.prototype.render = function (context, baseUnit) {
+        // Move object if required.
+        this.moveIfNecessary(baseUnit);
+        context.beginPath();
+        context.shadowBlur = 10;
+        context.shadowColor = this.color;
+        context.fillStyle = this.color;
+        context.fillRect(this.curPosition.x, this.curPosition.y, this.width, this.height);
+        context.fill();
+        context.closePath();
+        return this;
+    };
+    /**
+     * Get the current dimensions of rectangle.
+     */
+    Rectangle.prototype.getDimensions = function () {
+        return {
+            x: this.curPosition.x,
+            y: this.curPosition.y,
+            width: this.width,
+            height: this.height
+        };
+    };
+    return Rectangle;
+}(_1.Shape));
+exports.Rectangle = Rectangle;
+
+
+/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1715,7 +1722,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var _1 = __webpack_require__(0);
-var Point_1 = __webpack_require__(1);
 var Circle = /** @class */ (function (_super) {
     __extends(Circle, _super);
     /**
@@ -1735,40 +1741,13 @@ var Circle = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * Sets the position of Circle.
-     * @param x
-     * @param y
-     */
-    Circle.prototype.setPosition = function (x, y) {
-        this.curPosition = new Point_1.Point(x, y);
-        this._move = {
-            position: this.curPosition.clone(),
-            unit: 1
-        };
-        return this;
-    };
-    /**
      * Renders the object on canvas context.
      * @param context Canvas context object.
-     * @param baseUnit Canvas offset unit.
+     * @param baseUnit Canvas movement speed offset unit.
      */
     Circle.prototype.render = function (context, baseUnit) {
         // Move object if required.
-        if (!this.curPosition.isEqualTo(this._move.position)) {
-            var unit = baseUnit * this._move.unit;
-            if (unit == 0) {
-                // Move instantly.
-                this.curPosition.copy(this._move.position);
-                this._move.callback && this._move.callback();
-            }
-            else {
-                // Interpolate Movement.
-                this.curPosition.interpolate(this._move.position, unit);
-                if (this.curPosition.isEqualTo(this._move.position)) {
-                    this._move.callback && this._move.callback();
-                }
-            }
-        }
+        this.moveIfNecessary(baseUnit);
         context.beginPath();
         context.shadowBlur = this.shadowBlur;
         context.shadowColor = this.color;
@@ -1776,25 +1755,6 @@ var Circle = /** @class */ (function (_super) {
         context.arc(this.curPosition.x, this.curPosition.y, this.radius, 0, Math.PI * 2);
         context.fill();
         context.closePath();
-        return this;
-    };
-    /**
-     * Move Circle to new position.
-     * @param x
-     * @param y
-     * @param unit 0 to move instantly or specify a number to animate.
-     * @param onFinish Callback function to call after movement is complete.
-     */
-    Circle.prototype.moveTo = function (x, y, unit, onFinish) {
-        var _this = this;
-        if (unit === void 0) { unit = 1; }
-        this._move = {
-            position: new Point_1.Point(x, y),
-            unit: Math.abs(unit),
-            callback: onFinish ? function () {
-                onFinish(_this.curPosition.clone());
-            } : undefined
-        };
         return this;
     };
     /**
@@ -1814,8 +1774,83 @@ exports.Circle = Circle;
 
 
 /***/ }),
-/* 6 */,
-/* 7 */
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var _1 = __webpack_require__(0);
+var CustomShape = /** @class */ (function (_super) {
+    __extends(CustomShape, _super);
+    /**
+     * Initialize Circle object with height, width and color.
+     * @param width
+     * @param height
+     * @param color
+     */
+    function CustomShape(points, color, shadowBlur) {
+        if (shadowBlur === void 0) { shadowBlur = 10; }
+        var _this = _super.call(this) || this;
+        _this.color = color;
+        _this.shadowBlur = shadowBlur;
+        _this.points = points;
+        // Set default position.
+        _this.setPosition(0, 0);
+        return _this;
+    }
+    /**
+     * Renders the object on canvas context.
+     * @param context Canvas context object.
+     * @param baseUnit Canvas offset unit.
+     */
+    CustomShape.prototype.render = function (context, baseUnit) {
+        // Move object if required.
+        this.moveIfNecessary(baseUnit);
+        context.save();
+        context.translate(this.curPosition.x, this.curPosition.y);
+        context.beginPath();
+        for (var _i = 0, _a = this.points; _i < _a.length; _i++) {
+            var i = _a[_i];
+            context.lineTo(i.x, i.y);
+        }
+        context.closePath();
+        context.shadowBlur = this.shadowBlur;
+        context.shadowColor = this.color;
+        context.fillStyle = this.color;
+        context.fill();
+        context.restore();
+        return this;
+    };
+    /**
+     * Get the current dimensions of CustomShape.
+     */
+    CustomShape.prototype.getDimensions = function () {
+        return {
+            x: this.curPosition.x,
+            y: this.curPosition.y,
+            width: -1,
+            height: -1
+        };
+    };
+    return CustomShape;
+}(_1.Shape));
+exports.CustomShape = CustomShape;
+
+
+/***/ }),
+/* 7 */,
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1830,6 +1865,7 @@ w.Canvas = index_1.Canvas;
 w.Point = Point_1.Point;
 w.Circle = Shapes_1.Circle;
 w.Rectangle = Shapes_1.Rectangle;
+w.CustomShape = Shapes_1.CustomShape;
 
 
 /***/ })

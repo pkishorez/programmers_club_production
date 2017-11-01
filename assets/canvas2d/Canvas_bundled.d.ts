@@ -2,8 +2,8 @@
 // Dependencies for this module:
 //   victor
 
-declare module 'Canvas' {
-    import { Shape } from 'Canvas/Shapes';
+declare module 'canvas2d' {
+    import { Shape } from 'canvas2d/Shapes';
     export class Canvas {
             readonly height: number;
             readonly width: number;
@@ -40,43 +40,59 @@ declare module 'Canvas' {
     }
 }
 
-declare module 'Canvas/Shapes' {
-    import { Point } from 'Canvas/Point';
+declare module 'canvas2d/Shapes' {
+    import { Point } from 'canvas2d/Point';
     export interface IDimension {
-        x: number;
-        y: number;
-        width: number;
-        height: number;
+            x: number;
+            y: number;
+            width: number;
+            height: number;
     }
     /**
-      * Base Class for all types of shapes that can be
-      * added to Canvas library.
-      */
+        * Base Class for all types of shapes that can be
+        * added to Canvas library.
+        */
     export abstract class Shape {
-        protected curPosition: Point;
-        protected _move: {
-            position: Point;
-            unit: number;
-            callback?: (from?: Point) => void;
-        };
-        abstract render(context: CanvasRenderingContext2D, baseUnit: number): void;
-        abstract moveTo(x: number, y: number, unit?: number, onFinish?: (from: Point) => void): void;
-        abstract getDimensions(): IDimension;
-        isOverlap(obj: Shape): boolean;
+            protected curPosition: Point;
+            protected _move: {
+                    position: Point;
+                    unit: number;
+                    callback?: (from?: Point) => void;
+            };
+            abstract render(context: CanvasRenderingContext2D, baseUnit: number): void;
+            abstract getDimensions(): IDimension;
+            protected moveIfNecessary(baseUnit: number): void;
+            /**
+                * Sets the position of Shape.
+                * @param x
+                * @param y
+                */
+            setPosition(x: number, y: number): this;
+            /**
+                * Move Shape to new position.
+                * @param x
+                * @param y
+                * @param unit 0 to move instantly or specify a number to animate.
+                * @param onFinish Callback function to call after movement is complete.
+                *
+                * Overwrite this function if modifications required.
+                */
+            moveTo(x: number, y: number, unit?: number, onFinish?: (from: Point) => void): this;
+            isOverlap(obj: Shape): boolean;
     }
-    export { Rectangle } from 'Canvas/Shapes/Rectangle';
-    export { Circle } from 'Canvas/Shapes/Circle';
+    export { Rectangle } from 'canvas2d/Shapes/Rectangle';
+    export { Circle } from 'canvas2d/Shapes/Circle';
+    export { CustomShape } from 'canvas2d/Shapes/CustomShape';
 }
 
-declare module 'Canvas/Point' {
+declare module 'canvas2d/Point' {
     import Victor = require('victor');
     export class Point extends Victor {
     }
 }
 
-declare module 'Canvas/Shapes/Rectangle' {
-    import { IDimension, Shape } from 'Canvas/Shapes';
-    import { Point } from 'Canvas/Point';
+declare module 'canvas2d/Shapes/Rectangle' {
+    import { IDimension, Shape } from 'canvas2d/Shapes';
     export class Rectangle extends Shape {
             /**
                 * Initialize Rectangle object with height, width and color.
@@ -86,25 +102,11 @@ declare module 'Canvas/Shapes/Rectangle' {
                 */
             constructor(width: number, height: number, color: string);
             /**
-                * Sets the position of Rectangle.
-                * @param x
-                * @param y
-                */
-            setPosition(x: number, y: number): this;
-            /**
                 * Renders the object on canvas context.
                 * @param context Canvas context object.
                 * @param baseUnit Canvas offset unit.
                 */
             render(context: CanvasRenderingContext2D, baseUnit: number): this;
-            /**
-                * Move Rectangle to new position.
-                * @param x
-                * @param y
-                * @param unit 0 to move instantly or specify a number to animate.
-                * @param onFinish Callback function to call after movement is complete.
-                */
-            moveTo(x: number, y: number, unit?: number, onFinish?: (from: Point) => void): this;
             /**
                 * Get the current dimensions of rectangle.
                 */
@@ -112,9 +114,8 @@ declare module 'Canvas/Shapes/Rectangle' {
     }
 }
 
-declare module 'Canvas/Shapes/Circle' {
-    import { IDimension, Shape } from 'Canvas/Shapes';
-    import { Point } from 'Canvas/Point';
+declare module 'canvas2d/Shapes/Circle' {
+    import { IDimension, Shape } from 'canvas2d/Shapes';
     export class Circle extends Shape {
             /**
                 * Initialize Circle object with height, width and color.
@@ -124,11 +125,32 @@ declare module 'Canvas/Shapes/Circle' {
                 */
             constructor(radius: number, color: string, shadowBlur?: number);
             /**
-                * Sets the position of Circle.
-                * @param x
-                * @param y
+                * Renders the object on canvas context.
+                * @param context Canvas context object.
+                * @param baseUnit Canvas movement speed offset unit.
                 */
-            setPosition(x: number, y: number): this;
+            render(context: CanvasRenderingContext2D, baseUnit: number): this;
+            /**
+                * Get the current dimensions of Circle.
+                */
+            getDimensions(): IDimension;
+    }
+}
+
+declare module 'canvas2d/Shapes/CustomShape' {
+    import { IDimension, Shape } from 'canvas2d/Shapes';
+    export interface IPoint {
+            x: number;
+            y: number;
+    }
+    export class CustomShape extends Shape {
+            /**
+                * Initialize Circle object with height, width and color.
+                * @param width
+                * @param height
+                * @param color
+                */
+            constructor(points: IPoint[], color: string, shadowBlur?: number);
             /**
                 * Renders the object on canvas context.
                 * @param context Canvas context object.
@@ -136,15 +158,7 @@ declare module 'Canvas/Shapes/Circle' {
                 */
             render(context: CanvasRenderingContext2D, baseUnit: number): this;
             /**
-                * Move Circle to new position.
-                * @param x
-                * @param y
-                * @param unit 0 to move instantly or specify a number to animate.
-                * @param onFinish Callback function to call after movement is complete.
-                */
-            moveTo(x: number, y: number, unit?: number, onFinish?: (from: Point) => void): this;
-            /**
-                * Get the current dimensions of Circle.
+                * Get the current dimensions of CustomShape.
                 */
             getDimensions(): IDimension;
     }
