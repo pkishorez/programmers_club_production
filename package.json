@@ -7,13 +7,13 @@
 		"run": "nodemon bundle/server.bundle.js"
 	},
 	"dependencies": {
-		"classui": "0.0.48",
+		"classui": "*",
 		"es6-promise": "^4.1.1",
 		"mongodb": "^2.2.33"
 	},
 	"devDependencies": {
 		"express": "^4.16.2",
-		"socket.io": "^2.0.3"
+		"socket.io": "^2.0.4"
 	},
 	"author": "Kishore <kishore.iiitn@gmail.com>",
 	"license": "ISC"
