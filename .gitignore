@@ -1,6 +1,8 @@
 node_modules
 SW.js.map
+
 assets/canvas2d/global.js.map
 bundle/bundle.js.map
+bundle/GLOBALS.js.map
 assets/canvas2d/index.js.map
 assets/canvas2d/index.js

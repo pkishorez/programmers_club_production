@@ -1,1 +1,944 @@
-module.exports=function(e){function t(n){if(r[n])return r[n].exports;var i=r[n]={i:n,l:!1,exports:{}};return e[n].call(i.exports,i,i.exports,t),i.l=!0,i.exports}var r={};return t.m=e,t.c=r,t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{configurable:!1,enumerable:!0,get:n})},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=6)}([function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n=r(1),i=new n.Collection("keyvalue"),o=function(){function e(){}return e.set=function(e,t){return i.raw.update({_id:e},{data:t},{upsert:!0})},e.get=function(e){return i.findOne({_id:e}).then(function(e){return e?e.data:null})},e}();t.KeyValue=o},function(e,t,r){"use strict";var n=this&&this.__awaiter||function(e,t,r,n){return new(r||(r=Promise))(function(i,o){function s(e){try{c(n.next(e))}catch(e){o(e)}}function u(e){try{c(n.throw(e))}catch(e){o(e)}}function c(e){e.done?i(e.value):new r(function(t){t(e.value)}).then(s,u)}c((n=n.apply(e,t||[])).next())})},i=this&&this.__generator||function(e,t){function r(e){return function(t){return n([e,t])}}function n(r){if(i)throw new TypeError("Generator is already executing.");for(;c;)try{if(i=1,o&&(s=o[2&r[0]?"return":r[0]?"throw":"next"])&&!(s=s.call(o,r[1])).done)return s;switch(o=0,s&&(r=[0,s.value]),r[0]){case 0:case 1:s=r;break;case 4:return c.label++,{value:r[1],done:!1};case 5:c.label++,o=r[1],r=[0];continue;case 7:r=c.ops.pop(),c.trys.pop();continue;default:if(s=c.trys,!(s=s.length>0&&s[s.length-1])&&(6===r[0]||2===r[0])){c=0;continue}if(3===r[0]&&(!s||r[1]>s[0]&&r[1]<s[3])){c.label=r[1];break}if(6===r[0]&&c.label<s[1]){c.label=s[1],s=r;break}if(s&&c.label<s[2]){c.label=s[2],c.ops.push(r);break}s[2]&&c.ops.pop(),c.trys.pop();continue}r=t.call(e,c)}catch(e){r=[6,e],o=0}finally{i=s=0}if(5&r[0])throw r[1];return{value:r[0]?r[1]:void 0,done:!0}}var i,o,s,u,c={label:0,sent:function(){if(1&s[0])throw s[1];return s[1]},trys:[],ops:[]};return u={next:r(0),throw:r(1),return:r(2)},"function"==typeof Symbol&&(u[Symbol.iterator]=function(){return this}),u};Object.defineProperty(t,"__esModule",{value:!0});var o=r(14),s=r(2),u=function(){function e(){}return Object.defineProperty(e,"DB",{get:function(){return new Promise(function(e,t){o.connect("mongodb://127.0.0.1:27017",function(r,n){!r&&n&&e(n.db("iiitn")),t("Couldn't connect to database.")}),setTimeout(function(){t("Connection to database timedout.")},5e3)})},enumerable:!0,configurable:!0}),e}(),c=function(){function e(e){this.findOne=this.findOne.bind(this),this.getMany=this.getMany.bind(this),this.update=this.update.bind(this),this.insert=this.insert.bind(this),this.init=this.init.bind(this),this.init(e)}return e.prototype.init=function(e){return n(this,void 0,void 0,function(){var t,r;return i(this,function(n){switch(n.label){case 0:return n.trys.push([0,2,,3]),[4,u.DB];case 1:return t=n.sent(),this._collection=t.collection(e),[3,3];case 2:return r=n.sent(),console.error("Couldn't connect to database."),process.exit(),[3,3];case 3:return[2]}})})},Object.defineProperty(e.prototype,"raw",{get:function(){return this._collection},enumerable:!0,configurable:!0}),e.prototype.__map=function(e){return{toArray:function(){return e.toArray()},toObject:function(){var t={};return e.toArray().then(function(e){return e.map(function(e){t[e._id]=e}),t})}}},e.prototype.update=function(e,t){return n(this,void 0,void 0,function(){var r,n;return i(this,function(i){switch(i.label){case 0:if(t&&(r=s.Schema.validate(t,e)))return[2,Promise.reject(r)];i.label=1;case 1:return i.trys.push([1,3,,4]),[4,this._collection.updateOne({_id:e._id},e)];case 2:return[2,i.sent()];case 3:throw n=i.sent();case 4:return[2]}})})},e.prototype.insert=function(e,t){return n(this,void 0,void 0,function(){var r,n;return i(this,function(i){switch(i.label){case 0:if(t&&(r=s.Schema.validate(t,e)))return[2,Promise.reject(r)];i.label=1;case 1:return i.trys.push([1,3,,4]),[4,this._collection.insertOne(e)];case 2:return[2,i.sent()];case 3:throw n=i.sent();case 4:return[2]}})})},e.prototype.findOne=function(e,t){return n(this,void 0,void 0,function(){return i(this,function(r){switch(r.label){case 0:return[4,this._collection.findOne(e,{fields:t}).catch(function(){return Promise.reject("Couldn't find Record.")})];case 1:return[2,r.sent()]}})})},e.prototype.getMany=function(e,t){return this.__map(this._collection.find(e,t))},e}();t.Collection=c},function(e,t){e.exports=require("classui/Components/Form/Schema")},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n=r(16);t.S_User=n.S_User,t.S_UserLogin=n.S_UserLogin;var i=r(17);t.S_Question=i.S_Question;var o=r(4);t.S_Task=o.S_Task,t.S_UserTask_Details=o.S_UserTask_Details},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.S_Task={oneOf:[{type:"object",properties:{type:{const:"CANVAS2D"},title:{type:"string"},question:{type:"string"},resetCode:{type:"string"}},required:["type","title","question","resetCode"]},{type:"object",properties:{type:{const:"TYPESCRIPT_EXPOUTPUT"},title:{type:"string"},question:{type:"string"},resetCode:{type:"string"}},required:["type","title","question"]}]};var n={type:"string",pattern:"^[a-zA-Z0-9-]{1,50}$"};t.S_UserTask_Details={oneOf:[{type:"object",properties:{_id:n,type:{const:"CANVAS2D"},code:{type:"string"},result:{enum:["PENDING","WRONG","CAN_BE_IMPROVED","GOOD","PIXEL_PERFECT"]},comments:{type:"string"}},required:["type","code","result"]},{type:"object",properties:{_id:n,type:{const:"TYPESCRIPT_EXPOUTPUT"},code:{type:"string"},result:{enum:["PENDING","WRONG","RIGHT"]}},required:["type","code","result"]}]}},function(e,t){e.exports=require("classui/DataStructures/OrderedMap")},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n=r(7),i=r(8),o=r(9),s=r(10),u=r(11),c=n(),a=new o.Server(c),l=s(a);c.use(n.static("./")),c.get("*",function(e,t){t.sendFile(i.resolve("./index.html"))});var f=a.listen(80,function(){var e=f.address().address,t=f.address().port;console.log("Server started : "+e+" : "+t)});l.on("connection",function(e){console.log("Connection..."),new u.Connection(e)})},function(e,t){e.exports=require("express")},function(e,t){e.exports=require("path")},function(e,t){e.exports=require("http")},function(e,t){e.exports=require("socket.io")},function(e,t,r){"use strict";var n=this&&this.__rest||function(e,t){var r={};for(var n in e)Object.prototype.hasOwnProperty.call(e,n)&&t.indexOf(n)<0&&(r[n]=e[n]);if(null!=e&&"function"==typeof Object.getOwnPropertySymbols)for(var i=0,n=Object.getOwnPropertySymbols(e);i<n.length;i++)t.indexOf(n[i])<0&&(r[n[i]]=e[n[i]]);return r};Object.defineProperty(t,"__esModule",{value:!0});var i=r(12),o=r(20),s=r(21),u=function(){function e(e){this.socket=e,this.initialize()}return e.prototype.processRequest=function(e){var t=this;switch(e.type){case"USER_LOGIN":return i.User.login(e.data).then(function(e){var r=e.ref,i=n(e,["ref"]);return t.user=r,i});case"REGISTER":return i.User.register(e.data);case"STUDENTS":return i.User.getStudents();case"PROFILE":return i.User.getProfile(e.data.userid);case"TASK_ACTION":return i.Task.performAction(e.data)}if(!this.user)return Promise.reject("User should be authenticated first.");switch(e.type){case"USER_SAVE_TASK":return this.user.saveTask(e.data);case"GUIDE_INIT":return i.Guide.performAction(e.type,e.data)}if("admin"!=this.user.userid)return Promise.reject("User should be an admin.");switch(e.type){case"GUIDE_MODULE_ACTION":return i.Guide.performAction(e.type,e.data)}return Promise.reject("Request type "+e.type+" not found.")},e.prototype.initialize=function(){var e=this,t=[],r=!1,n=function(){if(!r){if(r=!0,0==t.length)return void(r=!1);var i=t[0];t=s.drop(t),e.processRequest(i).then(function(t){var s={data:t};e.socket.emit(o.getResponseID(i.id),s),r=!1,n()}).catch(function(t){var s={error:t};e.socket.emit(o.getResponseID(i.id),s),r=!1,n()})}};this.socket.on("request",function(e){t.push(e),n()})},e}();t.Connection=u},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var n=r(13);t.User=n.User,t.UserDB=n.UserDB;var i=r(18);t.Task=i.Task;var o=r(0);t.KeyValue=o.KeyValue;var s=r(19);t.Guide=s.Guide},function(e,t,r){"use strict";var n=this&&this.__assign||Object.assign||function(e){for(var t,r=1,n=arguments.length;r<n;r++){t=arguments[r];for(var i in t)Object.prototype.hasOwnProperty.call(t,i)&&(e[i]=t[i])}return e};Object.defineProperty(t,"__esModule",{value:!0});var i=r(1),o=r(15),s=r(2),u=r(3),c=r(4);t.UserDB=new i.Collection("user");var a=function(){function e(e){this.userid=e}return e.register=function(e){return e.tasks={},e.secretKey=o.v4(),t.UserDB.insert(e,u.S_User).then(function(t){return Promise.resolve("User "+e._id+" successfully registered.")}).catch(function(e){return Promise.reject("User already exists.")})},e.login=function(r){return t.UserDB.findOne({_id:r.userid}).then(function(t){return t?t.password==r.password||t.secretKey==r.secretKey?Promise.resolve({ref:new e(r.userid),secretKey:t.secretKey,tasks:t.tasks}):Promise.reject("Invalid password."):Promise.reject("User Not Found.")})},e.getStudents=function(){return t.UserDB.getMany({}).toArray().catch(function(){throw"Couldn't get students."})},e.getProfile=function(e){return t.UserDB.findOne({_id:e}).then(function(e){return e?Promise.resolve(e):Promise.reject("User Details not found.")}).catch(function(){return Promise.reject("Error getting profile details.")})},e.prototype.saveTask=function(e){e.taskDetails=n({result:"PENDING"},e.taskDetails);var r=s.Schema.validate(c.S_UserTask_Details,e.taskDetails);return r?Promise.reject(r):t.UserDB.raw.updateOne({_id:this.userid},{$set:(i={},i["tasks."+e.taskDetails._id]=e.taskDetails,i)}).then(function(){return Promise.resolve(e)}).catch(function(){return Promise.reject("Couldn't save.")});var i},e}();t.User=a},function(e,t){e.exports=require("mongodb")},function(e,t){e.exports=require("uuid")},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.S_User={type:"object",properties:{_id:{type:"string",pattern:"(^N\\d{6}$)|(admin)"},name:{type:"string"},email:{type:"string",format:"email"},password:{type:"string",minLength:5},batch:{enum:["E1","E2","E3","E4"]},branch:{enum:["CSE","MME","ECE","MECH","CHEMICAL"]}}},t.S_UserLogin={type:"object",properties:{userid:t.S_User.properties._id,password:t.S_User.properties.password}}},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.S_Question={type:"object",properties:{title:{type:"string"},description:{type:"string"}}}},function(e,t,r){"use strict";var n=this&&this.__awaiter||function(e,t,r,n){return new(r||(r=Promise))(function(i,o){function s(e){try{c(n.next(e))}catch(e){o(e)}}function u(e){try{c(n.throw(e))}catch(e){o(e)}}function c(e){e.done?i(e.value):new r(function(t){t(e.value)}).then(s,u)}c((n=n.apply(e,t||[])).next())})},i=this&&this.__generator||function(e,t){function r(e){return function(t){return n([e,t])}}function n(r){if(i)throw new TypeError("Generator is already executing.");for(;c;)try{if(i=1,o&&(s=o[2&r[0]?"return":r[0]?"throw":"next"])&&!(s=s.call(o,r[1])).done)return s;switch(o=0,s&&(r=[0,s.value]),r[0]){case 0:case 1:s=r;break;case 4:return c.label++,{value:r[1],done:!1};case 5:c.label++,o=r[1],r=[0];continue;case 7:r=c.ops.pop(),c.trys.pop();continue;default:if(s=c.trys,!(s=s.length>0&&s[s.length-1])&&(6===r[0]||2===r[0])){c=0;continue}if(3===r[0]&&(!s||r[1]>s[0]&&r[1]<s[3])){c.label=r[1];break}if(6===r[0]&&c.label<s[1]){c.label=s[1],s=r;break}if(s&&c.label<s[2]){c.label=s[2],c.ops.push(r);break}s[2]&&c.ops.pop(),c.trys.pop();continue}r=t.call(e,c)}catch(e){r=[6,e],o=0}finally{i=s=0}if(5&r[0])throw r[1];return{value:r[0]?r[1]:void 0,done:!0}}var i,o,s,u,c={label:0,sent:function(){if(1&s[0])throw s[1];return s[1]},trys:[],ops:[]};return u={next:r(0),throw:r(1),return:r(2)},"function"==typeof Symbol&&(u[Symbol.iterator]=function(){return this}),u};Object.defineProperty(t,"__esModule",{value:!0});var o=r(3),s=r(5),u=r(0),c=function(){function e(){}return e.prototype.__init=function(){return u.KeyValue.get("TASKS_DB").then(function(e){return new s.OrderedMap(e,o.S_Task)})},e.prototype.performAction=function(e){var t=this;return new Promise(function(r,o){return n(t,void 0,void 0,function(){var t;return i(this,function(n){switch(n.label){case 0:return this.orderedMap?[3,2]:(t=this,[4,this.__init()]);case 1:t.orderedMap=n.sent(),n.label=2;case 2:return e.orderedMapAction=this.orderedMap.performAction(e.orderedMapAction),u.KeyValue.set("TASKS_DB",this.orderedMap.getState()),r(e),[2]}})})}).catch(console.error)},e}();t._Task=c,t.Task=new c},function(e,t,r){"use strict";var n=this&&this.__awaiter||function(e,t,r,n){return new(r||(r=Promise))(function(i,o){function s(e){try{c(n.next(e))}catch(e){o(e)}}function u(e){try{c(n.throw(e))}catch(e){o(e)}}function c(e){e.done?i(e.value):new r(function(t){t(e.value)}).then(s,u)}c((n=n.apply(e,t||[])).next())})},i=this&&this.__generator||function(e,t){function r(e){return function(t){return n([e,t])}}function n(r){if(i)throw new TypeError("Generator is already executing.");for(;c;)try{if(i=1,o&&(s=o[2&r[0]?"return":r[0]?"throw":"next"])&&!(s=s.call(o,r[1])).done)return s;switch(o=0,s&&(r=[0,s.value]),r[0]){case 0:case 1:s=r;break;case 4:return c.label++,{value:r[1],done:!1};case 5:c.label++,o=r[1],r=[0];continue;case 7:r=c.ops.pop(),c.trys.pop();continue;default:if(s=c.trys,!(s=s.length>0&&s[s.length-1])&&(6===r[0]||2===r[0])){c=0;continue}if(3===r[0]&&(!s||r[1]>s[0]&&r[1]<s[3])){c.label=r[1];break}if(6===r[0]&&c.label<s[1]){c.label=s[1],s=r;break}if(s&&c.label<s[2]){c.label=s[2],c.ops.push(r);break}s[2]&&c.ops.pop(),c.trys.pop();continue}r=t.call(e,c)}catch(e){r=[6,e],o=0}finally{i=s=0}if(5&r[0])throw r[1];return{value:r[0]?r[1]:void 0,done:!0}}var i,o,s,u,c={label:0,sent:function(){if(1&s[0])throw s[1];return s[1]},trys:[],ops:[]};return u={next:r(0),throw:r(1),return:r(2)},"function"==typeof Symbol&&(u[Symbol.iterator]=function(){return this}),u};Object.defineProperty(t,"__esModule",{value:!0});var o=r(5),s=r(0),u=function(){function e(){}return e.prototype.__init=function(){return s.KeyValue.get("GUIDE_DB").then(function(e){return e||(e={}),e})},e.prototype.performAction=function(e,t){var r=this;return t.type=e,new Promise(function(e,u){return n(r,void 0,void 0,function(){var r,n;return i(this,function(i){switch(i.label){case 0:return this.guideState?[3,2]:(r=this,[4,this.__init()]);case 1:r.guideState=i.sent(),i.label=2;case 2:switch(t.type){case"GUIDE_INIT":t.state=this.guideState;break;case"GUIDE_MODULE_ACTION":if(!t.guide_id)return[2,u("Guide id should be provided.")];n=new o.OrderedMap(this.guideState[t.guide_id]),t.orderedMapAction=n.performAction(t.orderedMapAction),this.guideState[t.guide_id]=n.getState(),s.KeyValue.set("GUIDE_DB",this.guideState)}return e(t),[2]}})})}).catch(console.error)},e}();t.Guide=new u},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.getResponseID=function(e){return"response_"+e}},function(e,t){e.exports=require("lodash")}]);
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var mongodb = __webpack_require__(17);
+var Schema_1 = __webpack_require__(2);
+var DBConnection;
+var Database_ = /** @class */ (function () {
+    function Database_() {
+        this._collections = {};
+        new Promise(function (resolve, reject) {
+            mongodb.connect("mongodb://127.0.0.1:27017", function (err, res) {
+                if (!err && res) {
+                    DBConnection = res.db("iiitn");
+                    exports.Database._collections = {
+                        "guides": new Collection("guides"),
+                        "tasks": new Collection("tasks"),
+                        "user": new Collection("user"),
+                        "keyvalue": new Collection("keyvalue")
+                    };
+                    return resolve(DBConnection);
+                }
+                return reject("Couldn't connect to database.");
+            });
+            setTimeout(function () {
+                reject("Connection to database timedout.");
+            }, 5000);
+        });
+    }
+    Database_.prototype.collection = function (collection) {
+        if (!exports.Database._collections[collection]) {
+            console.error("Couldn't Access Database. For collection ", collection);
+            process.exit();
+        }
+        return exports.Database._collections[collection];
+    };
+    return Database_;
+}());
+exports.Database = new Database_();
+var Collection = /** @class */ (function () {
+    function Collection(collection) {
+        this.findOne = this.findOne.bind(this);
+        this.getMany = this.getMany.bind(this);
+        this.update = this.update.bind(this);
+        this.insert = this.insert.bind(this);
+        if (!DBConnection) {
+            console.error("Couldn't establish database connection : ", collection);
+            process.exit();
+        }
+        this._collection = DBConnection.collection(collection);
+    }
+    Collection.prototype.Get = function (collection) {
+        return exports.Database.collection(collection);
+    };
+    Object.defineProperty(Collection.prototype, "raw", {
+        get: function () {
+            return this._collection;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Collection.prototype.__map = function (res) {
+        return {
+            toArray: function () {
+                return res.toArray().catch(function () {
+                    return Promise.reject("Couldn't get records.");
+                });
+            },
+            toObject: function () {
+                var json = {};
+                return res.toArray().then(function (arr) {
+                    arr.map(function (elem) {
+                        json[elem._id] = elem;
+                    });
+                    return json;
+                }).catch(function () {
+                    return Promise.reject("Couldn't get records");
+                });
+            }
+        };
+    };
+    Collection.prototype.update = function (_id, data, schema, upsert) {
+        if (!this._collection) {
+            return Promise.reject("Couldn't get handle to collection.");
+        }
+        if (schema) {
+            var error = Schema_1.Schema.validate(schema, data);
+            if (error) {
+                return Promise.reject(error);
+            }
+        }
+        return this._collection.updateOne({ _id: _id }, data, {
+            upsert: upsert
+        }).catch(function () {
+            return Promise.reject("Coudln't update record.");
+        });
+    };
+    Collection.prototype.insert = function (data, schema) {
+        if (!this._collection) {
+            return Promise.reject("Couldn't get handle to collection.");
+        }
+        if (schema) {
+            var error = Schema_1.Schema.validate(schema, data);
+            if (error) {
+                return Promise.reject(error);
+            }
+        }
+        try {
+            return this._collection.insertOne(data).catch(function () {
+                return Promise.reject("Couldn't insert record");
+            });
+        }
+        catch (e) {
+            throw e;
+        }
+    };
+    Collection.prototype.deleteById = function (_id) {
+        if (!this._collection) {
+            return Promise.reject("Couldn't get handle to collection.");
+        }
+        return this._collection.deleteOne({ _id: _id }).catch(function () {
+            return Promise.reject("Couldn't delete record.");
+        });
+    };
+    Collection.prototype.findOne = function (criteria, fields) {
+        if (!this._collection) {
+            return Promise.reject("Couldn't get handle to collection.");
+        }
+        return this._collection.findOne(criteria, { fields: fields }).catch(function () {
+            return Promise.reject("Couldn't find Record.");
+        });
+    };
+    Collection.prototype.getMany = function (criteria, fields) {
+        return this.__map(this._collection.find(criteria, fields));
+    };
+    return Collection;
+}());
+exports.Collection = Collection;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = require("uuid");
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("classui/Components/Form/Schema");
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var User_1 = __webpack_require__(15);
+exports.S_User = User_1.S_User;
+exports.S_UserLogin = User_1.S_UserLogin;
+var Question_1 = __webpack_require__(16);
+exports.S_Question = Question_1.S_Question;
+var Task_1 = __webpack_require__(4);
+exports.S_Task = Task_1.S_Task;
+exports.S_UserTask_Details = Task_1.S_UserTask_Details;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.S_FunctionDetails = {
+    type: "object",
+    properties: {
+        name: {
+            type: "string"
+        },
+        tests: {
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    input: {
+                        type: "array"
+                    },
+                    output: {}
+                },
+                required: ["input", "output"]
+            }
+        }
+    },
+    required: ["name", "tests"]
+};
+exports.S_Task = {
+    oneOf: [
+        {
+            type: "object",
+            properties: {
+                type: {
+                    const: "CANVAS2D"
+                },
+                title: {
+                    type: "string"
+                },
+                question: {
+                    type: "string"
+                },
+                resetCode: {
+                    type: "string"
+                }
+            },
+            required: ["type", "title", "question", "resetCode"]
+        }, {
+            type: "object",
+            properties: {
+                type: {
+                    const: "TYPESCRIPT_EXPOUTPUT"
+                },
+                title: {
+                    type: "string"
+                },
+                question: {
+                    type: "string"
+                },
+                resetCode: {
+                    type: "string"
+                }
+            },
+            required: ["type", "title", "question"]
+        }, {
+            type: "object",
+            properties: {
+                type: {
+                    const: "TYPESCRIPT_TESTCASE_TASK"
+                },
+                title: {
+                    type: "string"
+                },
+                question: {
+                    type: "string"
+                },
+                resetCode: {
+                    type: "string"
+                },
+                funcDetails: exports.S_FunctionDetails
+            },
+            required: ["type", "title", "question", "resetCode", "funcDetails"]
+        }
+    ]
+};
+var validIDSchema = {
+    type: "string",
+    pattern: "^[a-zA-Z0-9-]{1,50}$"
+};
+exports.S_UserTask_Details = {
+    oneOf: [
+        {
+            type: "object",
+            properties: {
+                _id: validIDSchema,
+                type: {
+                    const: "CANVAS2D"
+                },
+                code: {
+                    type: "string"
+                },
+                result: {
+                    enum: ["PENDING", "WRONG", "CAN_BE_IMPROVED", "GOOD", "PIXEL_PERFECT"]
+                },
+                comments: {
+                    type: "string"
+                }
+            },
+            required: ["type", "code", "result"]
+        },
+        {
+            type: "object",
+            properties: {
+                _id: validIDSchema,
+                type: {
+                    const: "TYPESCRIPT_EXPOUTPUT"
+                },
+                code: {
+                    type: "string"
+                },
+                result: {
+                    enum: ["PENDING", "WRONG", "RIGHT"]
+                }
+            },
+            required: ["type", "code", "result"]
+        },
+        {
+            type: "object",
+            properties: {
+                _id: validIDSchema,
+                type: {
+                    const: "TYPESCRIPT_TESTCASE_TASK"
+                },
+                code: {
+                    type: "string"
+                },
+                test_cases_passed: {
+                    type: "number"
+                }
+            },
+            required: ["type", "code", "test_cases_passed"]
+        }
+        // Other type of tasks can be implemented here.
+    ]
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var uuid_1 = __webpack_require__(1);
+var _ = __webpack_require__(6);
+var es6_promise_1 = __webpack_require__(19);
+var OrderedMapDatabase = /** @class */ (function () {
+    function OrderedMapDatabase(collection, schema) {
+        if (schema === void 0) { schema = {}; }
+        var _this = this;
+        this.collection = collection;
+        this.collection.findOne({ _id: "config" }).then(function (config) {
+            _this.order = config.order;
+        }).catch(console.error);
+        this.Tschema = schema;
+    }
+    OrderedMapDatabase.prototype.performAction = function (action) {
+        var _this = this;
+        switch (action.type) {
+            case "INIT": {
+                var data = void 0;
+                return this.collection.getMany({}).toObject().then(function (list) {
+                    action.state = {
+                        map: _.omit(list, "config"),
+                        order: list.config ? list.config.order : Object.keys(list)
+                    };
+                    return action;
+                });
+            }
+            case "ADD": {
+                var new_id_1 = uuid_1.v4();
+                var data = action.value;
+                data._id = new_id_1;
+                return this.collection.insert(data, this.Tschema).then(function () {
+                    return _this.collection.update("config", {
+                        $push: { 'order': new_id_1 }
+                    }).then(function () {
+                        action._id = new_id_1;
+                        return action;
+                    });
+                });
+            }
+            case "DELETE": {
+                if (!this.order) {
+                    return es6_promise_1.Promise.reject("COULDN'T GET ORDER!!!");
+                }
+                return this.collection.deleteById(action._id).then(function () {
+                    var order = _this.order.filter(function (id) {
+                        return action._id != id;
+                    });
+                    return _this.setOrder(order).then(function () {
+                        return action;
+                    });
+                });
+            }
+            case "MODIFY": {
+                return this.collection.update(action._id, action.value, this.Tschema).then(function () {
+                    return action;
+                });
+            }
+            case "REORDER": {
+                return this.setOrder(action.order).then(function () {
+                    return action;
+                });
+            }
+        }
+        console.error("UNKNOWN OPERATION : ", action);
+        return es6_promise_1.Promise.reject("Unknown Operation ERROR.");
+    };
+    OrderedMapDatabase.prototype.setOrder = function (order) {
+        var _this = this;
+        return this.collection.update("config", {
+            order: order
+        }, undefined, true).then(function () {
+            _this.order = order;
+        }).catch(function () {
+            console.error("Couldn't update order.");
+            return es6_promise_1.Promise.reject("Couldn't update order.");
+        });
+    };
+    return OrderedMapDatabase;
+}());
+exports.OrderedMapDatabase = OrderedMapDatabase;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash");
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var express = __webpack_require__(8);
+var path = __webpack_require__(9);
+var http = __webpack_require__(10);
+var socketIO = __webpack_require__(11);
+var Connection_1 = __webpack_require__(12);
+var app = express();
+// sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
+// let privateKey = fs.readFileSync('./assets/certs/iiitnselfsigned.key', 'utf8');
+// let certificate = fs.readFileSync('./assets/certs/iiitnselfsigned.crt', 'utf8');
+var httpServer = new http.Server(app);
+// let httpsServer = https.createServer({
+// 	key: privateKey,
+// 	cert: certificate
+// }, app);
+var io = socketIO(httpServer);
+/*
+app.get("/bundle/bundle.js", (req, res, next)=>{
+    req.url = req.url + '.gz';
+    console.log("Requested GZ");
+    res.set('Content-Encoding', 'gzip');
+    next();
+});
+*/
+app.use(express.static("./"));
+app.get('*', function (req, res) {
+    res.sendFile(path.resolve('./index.html'));
+});
+var server = httpServer.listen(80, function () {
+    var host = server.address().address;
+    var port = server.address().port;
+    console.log("Server started : " + host + " : " + port);
+});
+io.on('connection', function (socket) {
+    // NEW CONNECTION.
+    console.log("Connection...");
+    new Connection_1.Connection(socket);
+});
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = require("express");
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("path");
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = require("http");
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = require("socket.io");
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var IIITN_1 = __webpack_require__(13);
+var Utils_1 = __webpack_require__(22);
+var _ = __webpack_require__(6);
+var Connection = /** @class */ (function () {
+    function Connection(socket) {
+        this.socket = socket;
+        this.initialize();
+    }
+    Connection.prototype.processRequest = function (request) {
+        var _this = this;
+        switch (request.type) {
+            case "USER_LOGIN": {
+                return IIITN_1.User.login(request.data).then(function (data) {
+                    var ref = data.ref, loggedInData = __rest(data, ["ref"]);
+                    _this.user = ref;
+                    return loggedInData;
+                });
+            }
+            case "REGISTER": {
+                return IIITN_1.User.register(request.data);
+            }
+            case "STUDENTS": {
+                return IIITN_1.User.getStudents();
+            }
+            case "PROFILE": {
+                return IIITN_1.User.getProfile(request.data.userid);
+            }
+            case "TASK_ACTION": {
+                return IIITN_1.Task.performAction(request.data);
+            }
+        }
+        if (!this.user) {
+            return Promise.reject("User should be authenticated first.");
+        }
+        switch (request.type) {
+            // Authenticated actions goes here...
+            case "USER_SAVE_TASK": {
+                return this.user.saveTask(request.data);
+            }
+        }
+        // Admin actions goes here...
+        if (this.user.userid != "admin") {
+            return Promise.reject("User should be an admin.");
+        }
+        switch (request.type) {
+            case "GUIDE_ACTION": {
+                return IIITN_1.Guide.performAction(request.data);
+            }
+        }
+        return Promise.reject("Request type " + request.type + " not found.");
+    };
+    Connection.prototype.initialize = function () {
+        var _this = this;
+        // Queue requests one after the other.
+        var requests = [];
+        var processInProgress = false;
+        var functionQueue = function () {
+            if (processInProgress) {
+                return;
+            }
+            processInProgress = true;
+            if (requests.length == 0) {
+                processInProgress = false;
+                return;
+            }
+            var request = requests[0];
+            requests = _.drop(requests);
+            _this.processRequest(request).then(function (data) {
+                var response = {
+                    data: data
+                };
+                _this.socket.emit(Utils_1.getResponseID(request.id), response);
+                processInProgress = false;
+                functionQueue();
+            }).catch(function (error) {
+                var response = {
+                    error: error
+                };
+                _this.socket.emit(Utils_1.getResponseID(request.id), response);
+                processInProgress = false;
+                functionQueue();
+            });
+        };
+        this.socket.on('request', function (request) {
+            // Process request and send response in data.
+            requests.push(request);
+            functionQueue();
+        });
+    };
+    return Connection;
+}());
+exports.Connection = Connection;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var User_1 = __webpack_require__(14);
+exports.User = User_1.User;
+var Task_1 = __webpack_require__(18);
+exports.Task = Task_1.Task;
+var _KeyValue_1 = __webpack_require__(20);
+exports.KeyValue = _KeyValue_1.KeyValue;
+var Guide_1 = __webpack_require__(21);
+exports.Guide = Guide_1.Guide;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var uuid_1 = __webpack_require__(1);
+var Schema_1 = __webpack_require__(2);
+var index_1 = __webpack_require__(3);
+var Task_1 = __webpack_require__(4);
+var Database_1 = __webpack_require__(0);
+var User = /** @class */ (function () {
+    function User(userid) {
+        this.userid = userid;
+    }
+    User.register = function (user) {
+        // Add an empty object for tasks.
+        user.tasks = {};
+        user.secretKey = uuid_1.v4();
+        return Database_1.Database.collection("user").insert(user, index_1.S_User).then(function (res) {
+            return Promise.resolve("User " + user._id + " successfully registered.");
+        }).catch(function (e) { return Promise.reject("User already exists."); });
+    };
+    User.login = function (data) {
+        return Database_1.Database.collection("user").findOne({ _id: data.userid }).then(function (user) {
+            if (!user) {
+                return Promise.reject("User Not Found.");
+            }
+            if ((user.password == data.password) || (user.secretKey == data.secretKey)) {
+                return Promise.resolve({
+                    ref: new User(data.userid),
+                    secretKey: user.secretKey,
+                    tasks: user.tasks
+                });
+            }
+            return Promise.reject("Invalid password.");
+        });
+    };
+    User.getStudents = function () {
+        return Database_1.Database.collection("user").getMany({}).toArray()
+            .catch(function () { throw "Couldn't get students."; });
+    };
+    User.getProfile = function (userid) {
+        return Database_1.Database.collection("user").findOne({ _id: userid }).then(function (res) {
+            if (!res) {
+                return Promise.reject("User Details not found.");
+            }
+            return Promise.resolve(res);
+        }).catch(function () {
+            return Promise.reject("Error getting profile details.");
+        });
+    };
+    User.prototype.saveTask = function (saveTaskAction) {
+        // Default data if any.
+        saveTaskAction.taskDetails = __assign({}, saveTaskAction.taskDetails);
+        var error = Schema_1.Schema.validate(Task_1.S_UserTask_Details, saveTaskAction.taskDetails);
+        if (error) {
+            return Promise.reject(error);
+        }
+        return Database_1.Database.collection("user").raw.updateOne({ _id: this.userid }, {
+            $set: (_a = {},
+                _a["tasks." + saveTaskAction.taskDetails._id] = saveTaskAction.taskDetails,
+                _a)
+        }).then(function () {
+            return Promise.resolve(saveTaskAction);
+        }).catch(function () {
+            return Promise.reject("Couldn't save.");
+        });
+        var _a;
+    };
+    return User;
+}());
+exports.User = User;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.S_User = {
+    type: "object",
+    properties: {
+        _id: {
+            type: "string",
+            pattern: "(^N\\d{6}$)|(admin)"
+        },
+        name: {
+            type: "string"
+        },
+        email: {
+            type: "string",
+            format: "email"
+        },
+        password: {
+            type: "string",
+            minLength: 5
+        },
+        batch: {
+            enum: ["E1", "E2", "E3", "E4"]
+        },
+        branch: {
+            enum: ["CSE", "MME", "ECE", "MECH", "CHEMICAL"]
+        }
+    }
+};
+exports.S_UserLogin = {
+    type: "object",
+    properties: {
+        userid: exports.S_User.properties._id,
+        password: exports.S_User.properties.password
+    }
+};
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.S_Question = {
+    type: "object",
+    properties: {
+        title: {
+            type: "string"
+        },
+        description: {
+            type: "string"
+        }
+    }
+};
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = require("mongodb");
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var index_1 = __webpack_require__(3);
+var OrderedMapDatabase_1 = __webpack_require__(5);
+var Database_1 = __webpack_require__(0);
+var _Task = /** @class */ (function () {
+    function _Task() {
+    }
+    // Update task. One action should be there.
+    _Task.prototype.performAction = function (action) {
+        if (!this.orderedMapDatabase) {
+            this.orderedMapDatabase = new OrderedMapDatabase_1.OrderedMapDatabase(Database_1.Database.collection("tasks"), index_1.S_Task);
+        }
+        var status = this.orderedMapDatabase.performAction(action.orderedMapAction);
+        return status.then(function (omAction) {
+            action.orderedMapAction = omAction;
+            return Promise.resolve(action);
+        }).catch(function (error) {
+            console.log(error);
+            return Promise.reject("Couldn't perform action.");
+        });
+    };
+    return _Task;
+}());
+exports._Task = _Task;
+exports.Task = new _Task();
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = require("es6-promise");
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Database_1 = __webpack_require__(0);
+var KeyValue = /** @class */ (function () {
+    function KeyValue() {
+    }
+    // Update task. One action should be there.
+    KeyValue.set = function (key, data) {
+        return Database_1.Database.collection("keyvalue").raw.update({ _id: key }, {
+            data: data
+        }, {
+            upsert: true
+        });
+    };
+    KeyValue.get = function (key) {
+        return Database_1.Database.collection("keyvalue").findOne({ _id: key }).then(function (data) {
+            if (data) {
+                return data.data;
+            }
+            return null;
+        });
+    };
+    return KeyValue;
+}());
+exports.KeyValue = KeyValue;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var OrderedMapDatabase_1 = __webpack_require__(5);
+var Database_1 = __webpack_require__(0);
+var _Guide = /** @class */ (function () {
+    function _Guide() {
+    }
+    // Update task. One action should be there.
+    _Guide.prototype.performAction = function (action) {
+        if (!this.orderedMapDatabase) {
+            this.orderedMapDatabase = new OrderedMapDatabase_1.OrderedMapDatabase(Database_1.Database.collection("guides"));
+        }
+        return this.orderedMapDatabase.performAction(action.orderedMapAction).then(function (omAction) {
+            action.orderedMapAction = omAction;
+            return action;
+        }).catch(function (error) {
+            return Promise.reject("Couldn't perform action.");
+        });
+    };
+    return _Guide;
+}());
+exports.Guide = new _Guide();
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getResponseID = function (req_id) {
+    return "response_" + req_id;
+};
+
+
+/***/ })
+/******/ ]);
