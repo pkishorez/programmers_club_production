@@ -72,7 +72,7 @@ module.exports =
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongodb = __webpack_require__(17);
-var Schema_1 = __webpack_require__(2);
+var Schema_1 = __webpack_require__(3);
 var DBConnection;
 var Database_ = /** @class */ (function () {
     function Database_() {
@@ -211,16 +211,22 @@ exports.Collection = Collection;
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = require("uuid");
+module.exports = require("lodash");
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports) {
 
-module.exports = require("classui/Components/Form/Schema");
+module.exports = require("uuid");
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports) {
+
+module.exports = require("classui/Components/Form/Schema");
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -231,13 +237,13 @@ exports.S_User = User_1.S_User;
 exports.S_UserLogin = User_1.S_UserLogin;
 var Question_1 = __webpack_require__(16);
 exports.S_Question = Question_1.S_Question;
-var Task_1 = __webpack_require__(4);
+var Task_1 = __webpack_require__(5);
 exports.S_Task = Task_1.S_Task;
 exports.S_UserTask_Details = Task_1.S_UserTask_Details;
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -385,14 +391,14 @@ exports.S_UserTask_Details = {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var uuid_1 = __webpack_require__(1);
-var _ = __webpack_require__(6);
+var uuid_1 = __webpack_require__(2);
+var _ = __webpack_require__(1);
 var es6_promise_1 = __webpack_require__(19);
 var OrderedMapDatabase = /** @class */ (function () {
     function OrderedMapDatabase(collection, schema) {
@@ -472,12 +478,6 @@ var OrderedMapDatabase = /** @class */ (function () {
 }());
 exports.OrderedMapDatabase = OrderedMapDatabase;
 
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = require("lodash");
 
 /***/ }),
 /* 7 */
@@ -567,7 +567,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var IIITN_1 = __webpack_require__(13);
 var Utils_1 = __webpack_require__(22);
-var _ = __webpack_require__(6);
+var _ = __webpack_require__(1);
 var Connection = /** @class */ (function () {
     function Connection(socket) {
         this.socket = socket;
@@ -603,6 +603,10 @@ var Connection = /** @class */ (function () {
             // Authenticated actions goes here...
             case "USER_SAVE_TASK": {
                 return this.user.saveTask(request.data);
+            }
+            case "GUIDE_ACTION": {
+                if (_.get(request.data, "orderedMapAction.type") == "INIT")
+                    return IIITN_1.Guide.performAction(request.data);
             }
         }
         // Admin actions goes here...
@@ -691,11 +695,12 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var uuid_1 = __webpack_require__(1);
-var Schema_1 = __webpack_require__(2);
-var index_1 = __webpack_require__(3);
-var Task_1 = __webpack_require__(4);
+var uuid_1 = __webpack_require__(2);
+var Schema_1 = __webpack_require__(3);
+var index_1 = __webpack_require__(4);
+var Task_1 = __webpack_require__(5);
 var Database_1 = __webpack_require__(0);
+var _ = __webpack_require__(1);
 var User = /** @class */ (function () {
     function User(userid) {
         this.userid = userid;
@@ -724,7 +729,9 @@ var User = /** @class */ (function () {
         });
     };
     User.getStudents = function () {
-        return Database_1.Database.collection("user").getMany({}).toArray()
+        return Database_1.Database.collection("user").getMany({}).toArray().then(function (data) {
+            return data.map(function (obj) { return _.omit(obj, ["password", "secretKey"]); });
+        })
             .catch(function () { throw "Couldn't get students."; });
     };
     User.getProfile = function (userid) {
@@ -790,15 +797,20 @@ exports.S_User = {
         },
         branch: {
             enum: ["CSE", "MME", "ECE", "MECH", "CHEMICAL"]
+        },
+        role: {
+            enum: ["admin", "student"]
         }
-    }
+    },
+    required: ["_id", "email", "password", "batch", "branch"]
 };
 exports.S_UserLogin = {
     type: "object",
     properties: {
         userid: exports.S_User.properties._id,
         password: exports.S_User.properties.password
-    }
+    },
+    required: ["userid", "password"]
 };
 
 
@@ -835,8 +847,8 @@ module.exports = require("mongodb");
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var index_1 = __webpack_require__(3);
-var OrderedMapDatabase_1 = __webpack_require__(5);
+var index_1 = __webpack_require__(4);
+var OrderedMapDatabase_1 = __webpack_require__(6);
 var Database_1 = __webpack_require__(0);
 var _Task = /** @class */ (function () {
     function _Task() {
@@ -906,7 +918,7 @@ exports.KeyValue = KeyValue;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var OrderedMapDatabase_1 = __webpack_require__(5);
+var OrderedMapDatabase_1 = __webpack_require__(6);
 var Database_1 = __webpack_require__(0);
 var _Guide = /** @class */ (function () {
     function _Guide() {
