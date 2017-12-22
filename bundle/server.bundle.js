@@ -586,9 +586,6 @@ var Connection = /** @class */ (function () {
             case "REGISTER": {
                 return IIITN_1.User.register(request.data);
             }
-            case "STUDENTS": {
-                return IIITN_1.User.getStudents();
-            }
             case "PROFILE": {
                 return IIITN_1.User.getProfile(request.data.userid);
             }
@@ -616,6 +613,9 @@ var Connection = /** @class */ (function () {
         switch (request.type) {
             case "GUIDE_ACTION": {
                 return IIITN_1.Guide.performAction(request.data);
+            }
+            case "STUDENTS": {
+                return IIITN_1.User.getStudents();
             }
         }
         return Promise.reject("Request type " + request.type + " not found.");
