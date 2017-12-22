@@ -799,7 +799,8 @@ exports.S_User = {
             enum: ["CSE", "MME", "ECE", "MECH", "CHEMICAL"]
         },
         role: {
-            enum: ["admin", "student"]
+            enum: ["admin", "student"],
+            default: "student"
         }
     },
     required: ["_id", "email", "password", "batch", "branch"]
